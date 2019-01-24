@@ -76,8 +76,11 @@ function ch_selected = channel_select(A, b, N, method, lags)
         RXY_sel = RXY(logical(col_sel));              
         
         util = zeros(size(temp_chnl_list,1),1);
+
+        eigvals = diag(X_sel);
+        lambda_scaling = min(eigvals(eigavals>0));
         
-        lambda_I = (mean(diag(X_sel))*1.0e-5)*eye(size(X_sel,1)); 
+        lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
         Xinv = inv(X_sel + min_norm_flag*lambda_I);
         
         % Compute the new decoder with remaining channels
