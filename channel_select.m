@@ -140,35 +140,66 @@ function ch_selected = channel_select(A, b, N, varargin)
         ch_selected = ch_selected(1:N);
     elseif(strcmp(method,'lasso'))
         % Solving LASSO based node selection using YALMIP
-        
+        load('matfiles/nearest_neighbours_50mm.mat','chnl_list');
         n = size(A,2)/noflags;
         m = size(A,1);
         lassochnum = N;
-
         
+        Gmat = zeros(n,size(A,2));
+        strt = 1;
+        stp = strt+noflags-1;
+        for i = 1:n            
+            Gmat(i,strt:stp) = 1;
+            strt = strt+noflags;
+            stp = strt+noflags-1;
+        end
+        for i = 1:size(Galconn_mat, 1)
+            for j = 1:i-1
+               if(Galconn_mat(i,j)==1)
+                    Galconn_mat(i,j) = 0;
+               end               
+            end      
+        end
+        no_of_constraints = length(find(Galconn_mat==1));
+        [r,c] = find(Galconn_mat==1);
+        Galconn_mat_new = zeros(no_of_constraints,n);
+        for i = 1:size(r,1)
+            Galconn_mat_new(i,r(i)) = 1;
+            Galconn_mat_new(i,c(i)) = 1;
+        end
         % Following code adapted from https://osqp.org/docs/examples/lasso.html
-        x = sdpvar(n, 1);
-        gamma = sdpvar;
-        objective = 0.5*norm(A*x - b)^2 + gamma*norm(x,1);
+        x = sdpvar(size(A,2), 1);
+        Rxx = A'*A;
+        Rxy = A'*b;
         options = sdpsettings('solver', 'gurobi');
-        
-        % No galvanic isolation
-        x_opt = optimizer([], objective, options, gamma, x);
         lambda = lassochnum;
-        flag = 1;
-        
-        % With galvanic isolation
-%         load('matfiles/nearest_neighbours_50mm.mat','Galconn_mat');
         M = 10;               
         z = binvar(n, 1);
-        objective = 0.5*norm(A*x - b)^2;
+        % Group lasso objective        
         k = sdpvar;
-        Constraints = [sum(z)<=k, z'*Galconn_mat*z==0,-M*z<=x<=M*z,];
-
+        % Contraints for group-LASSO (does not work with lags yet)
+%         Constraints = [sum(z)<=k,-M*z<=Gmat*x<=M*z];
         
-        x_opt = optimizer(Constraints, objective, options, k, {x,z});
+        % Constraints for galvanic isolation
+%         Constraints = [sum(z)<=k, z'*Galconn_mat*z<=1,-M*z<=Gmat*x<=M*z];
+%         Constraints = [sum(z)<=k, z'*Galconn_mat*z<=1,-M*z<=Gmat*x<=M*z];
+        grpM = zeros(size(A,2), n);
+        col_mat = [M*ones(noflags,1);zeros(size(A,2)-noflags,1)];
+        for i = 1:n
+            grpM(:,i) = circshift(col_mat, noflags*(i-1));
+        end
+        
+        %         objective = 0.5*norm(A*x - b)^2 + norm(x,1);
+        objective_quad = (0.5*x'*Rxx*x - x'*Rxy) + norm(x,1);
+%         Constraints = [sum(z)<=k, z'*Galconn_mat*z<=1, -grpM*z<=x<=grpM*z];
+%         Constraints = [sum(z)<=k, Galconn_mat_new*z<=1,-M*z<=Gmat*x<=M*z];
+        Constraints = [sum(z)<=k,Galconn_mat_new*z<=1,-grpM*z<=x<=grpM*z];
+        x_opt = optimizer(Constraints, objective_quad, options, k, {x,z});
         x_mu = x_opt(lambda);
-        
+        tmp = Gmat*x_mu{1,1};
+%         tmp = x_mu{1,1};        
+        ch_selected{1} = {chnl_list(abs(tmp)>1e-3,:)};
+        ch_selected{2} = x_mu;
     else
         error('Supported Methods: utility, lasso');
     end
