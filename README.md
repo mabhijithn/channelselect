@@ -3,7 +3,8 @@ This project holds useful functions in emulation and analysis of Wireless EEG Se
 
 ## Features
 1. Channel Selection (channel_select.m) : Selects the best N channels for the LS problem min_(x) 1/2 (Ax-b)'(Ax-b).
-Currently supported methods: 1. Utility based method.
+Currently supported methods: 
+		1. Utility based method.
 
 
 # References
