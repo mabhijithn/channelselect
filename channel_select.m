@@ -32,7 +32,7 @@
 % Outputs: 
 %   ch_selected - The indices of the best N channels in A. They are 
 %                 ordered in descending order of significance.
-function ch_selected = channel_select(A, b, N, varargin)
+function [ch_selected, x_mu] = channel_select(A, b, N, varargin)
     
     % Default conditions
     method = 'utility';
@@ -56,14 +56,22 @@ function ch_selected = channel_select(A, b, N, varargin)
                     noflags = Value+1;
                 case 'galiso'
                     Galconn_mat = Value;
+                case 'grpnorm'
+                    group_norm = Value;
+                case 'covar'
+                    RXX = Value;
+                case 'crossvar'
+                    RXY = Value;
             end
         end
     end
     
     if(strcmp(method,'utility'))
         % Calculate the auto and crosscovariances
-        RXX = (A'*A)/size(A,1);
-        RXY = (A'*b)/size(A,1);
+        if(~exist('RXX'))
+            RXX = (A'*A)/size(A,1);
+            RXY = (A'*b)/size(A,1);
+        end
         no_of_channels = size(RXX,2)/noflags;
 
         % Initialise a list of original indices/channels
@@ -140,7 +148,7 @@ function ch_selected = channel_select(A, b, N, varargin)
         ch_selected = ch_selected(1:N);
     elseif(strcmp(method,'lasso'))
         % Solving LASSO based node selection using YALMIP
-        load('matfiles/nearest_neighbours_50mm.mat','chnl_list');
+%         load('matfiles/nearest_neighbours_50mm.mat','chnl_list');
         n = size(A,2)/noflags;
         m = size(A,1);
         lassochnum = N;
@@ -169,12 +177,13 @@ function ch_selected = channel_select(A, b, N, varargin)
         end
         % Following code adapted from https://osqp.org/docs/examples/lasso.html
         x = sdpvar(size(A,2), 1);
-        Rxx = A'*A;
-        Rxy = A'*b;
-        options = sdpsettings('solver', 'gurobi');
+        Rxx = (A'*A);
+        Rxy = (A'*b);
+        options = sdpsettings('solver', 'gurobi','verbose', 2);
         lambda = lassochnum;
-        M = 10;               
+        M = 100;               
         z = binvar(n, 1);
+        
         % Group lasso objective        
         k = sdpvar;
         % Contraints for group-LASSO (does not work with lags yet)
@@ -190,16 +199,19 @@ function ch_selected = channel_select(A, b, N, varargin)
         end
         
         %         objective = 0.5*norm(A*x - b)^2 + norm(x,1);
-        objective_quad = (0.5*x'*Rxx*x - x'*Rxy) + norm(x,1);
+%         objective_quad = (0.5*x'*Rxx*x - x'*Rxy) + norm(x,1);
+        objective_quad = (0.5*x'*Rxx*x - x'*Rxy);
 %         Constraints = [sum(z)<=k, z'*Galconn_mat*z<=1, -grpM*z<=x<=grpM*z];
 %         Constraints = [sum(z)<=k, Galconn_mat_new*z<=1,-M*z<=Gmat*x<=M*z];
-        Constraints = [sum(z)<=k,Galconn_mat_new*z<=1,-grpM*z<=x<=grpM*z];
+        Constraints = [sum(z)==k,Galconn_mat_new*z<=1,Gmat*abs(x)<=M*z];
+%         Constraints = [sum(z)==k,-grpM*z<=x<=grpM*z];
         x_opt = optimizer(Constraints, objective_quad, options, k, {x,z});
         x_mu = x_opt(lambda);
         tmp = Gmat*x_mu{1,1};
+        ch_selected = find(abs(tmp)>1e-3);
 %         tmp = x_mu{1,1};        
-        ch_selected{1} = {chnl_list(abs(tmp)>1e-3,:)};
-        ch_selected{2} = x_mu;
+%         ch_selected{1} = {chnl_list(abs(tmp)>1e-3,:)};
+%         ch_selected{2} = x_mu;
     else
         error('Supported Methods: utility, lasso');
     end
