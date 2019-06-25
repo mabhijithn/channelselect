@@ -81,5 +81,6 @@ The Software constitutes any software distributed as part of or pertaining to th
 #### A.2 References:
 
 [1] Narayanan, A. M., & Bertrand, A. (2019). "Analysis of miniaturization effects and channel selection strategies for EEG sensor networks with application to auditory attention detection". IEEE Transactions on Biomedical Engineering.
+
 [2] Bertrand, A. (2018). "Utility Metrics for Assessment and Subset Selection of Input Variables for Linear Estimation [Tips & Tricks]". IEEE Signal Processing Magazine, 35(6), 93–99.
 
