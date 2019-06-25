@@ -22,10 +22,6 @@
 %   'lags' - Number of delays (in number of samples) applied to channels in A
 %          default: 0 (assumes no delays)
 %   
-%   'galiso' - No galvanic isolation (default) : An empty matrix if no galvanic (WESN context data)
-%              Galvanic isolation : A matrix which shows galvanic connection
-%              between channels (ref: find_gal_conn.m to generate this
-%              matrx)
 %               
 %   
 %
@@ -54,8 +50,6 @@ function ch_selected = channel_select(A, b, N, varargin)
                     method = Value;
                 case 'lags'
                     noflags = Value+1;
-                case 'galiso'
-                    Galconn_mat = Value;
             end
         end
     end
