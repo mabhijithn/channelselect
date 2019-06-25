@@ -6,6 +6,10 @@ title: Readme
 # WESN Tools
 This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks [1].
 
+a given wire happens to be carrying "$$\lvert 0\rangle$$."
+By that we mean that it's carrying the linear combination
+$$\begin{psmallmatrix} 1 \\ 0 \end{psmallmatrix}$$
+
 ## Features
 1. Channel Selection: Selects the best N channels of A for the LS problem 
 
