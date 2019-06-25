@@ -1,3 +1,4 @@
+<head>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     extensions: [
@@ -18,7 +19,7 @@
   });
 </script>
 <script type="text/javascript" async src="path-to-MathJax/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
+</head>
 
 # WESN Tools
 This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks [1].
