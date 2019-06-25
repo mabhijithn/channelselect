@@ -1,8 +1,15 @@
+---
+layout: post
+mathjax: true
+title: Readme
+---
 # WESN Tools
 This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks [1].
 
 ## Features
-1. Channel Selection: Selects the best N channels of A for the LS problem min_(x) 1/2 (Ax-b)'(Ax-b).
+1. Channel Selection: Selects the best N channels of A for the LS problem 
+
+	$$ \min_{\mathbf{w}}\frac{1}{2}||\mathbf{A}_P\mathbf{w} - \mathbf{s}_a||_{2}^{2} $$
 
 a. MATLAB version: channel_select.m
 
