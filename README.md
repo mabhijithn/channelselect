@@ -1,9 +1,13 @@
 # WESN Tools
-This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks[1].
+This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks [1].
 
 ## Features
-1. Channel Selection (channel_select.m) : Selects the best N channels for the LS problem min_(x) 1/2 (Ax-b)'(Ax-b).
-Currently supported methods: 
+1. Channel Selection: Selects the best N channels of A for the LS problem min_(x) 1/2 (Ax-b)'(Ax-b).
+	a. MATLAB version:
+	channel_select.m : 	
+	b. Python version:
+	channel_select.py
+	Currently supported methods: 
 		1. Utility based method.
 
 
