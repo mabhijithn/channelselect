@@ -1,22 +1,23 @@
-# A function which selects the best columns of A in the least-squares problem 
-# min_x 1/2 ||Ax-b||_2^2 
-#
-#  Usage: ch_selected = channel_select(A=A, b=b, method='utility')
-#  
-#  Input: A - matrix with channels/features along columns and time/length of features along rows
-#            size: (T X N) - N channels; T duration/length
-#         b - Vector of size (T X 1)
-#         method - a string; currently supported : 'utility' [1,2]
-# 
-# [1] Narayanan, A. M., & Bertrand, A. (2019). Analysis of miniaturization effects and channel selection strategies for EEG sensor networks with application to auditory attention detection. IEEE Transactions on Biomedical Engineering.
-# [2] Bertrand, A. (2018). Utility Metrics for Assessment and Subset Selection of Input Variables for Linear Estimation [Tips & Tricks]. IEEE Signal Processing Magazine, 35(6), 93–99.
-#
-#
-#
 import numpy as np
 from itertools import compress
 def channel_select(**argV):
-    if 'A' in argV:
+''' 
+A function which selects the best columns of A in the least-squares problem 
+  min_x 1/2 ||Ax-b||_2^2 
+
+  Usage: ch_selected = channel_select(A=A, b=b, method='utility')
+  
+  Input: A - matrix with channels/features along columns and time/length of features along rows
+            size: (T X N) - N channels; T duration/length
+        b - Vector of size (T X 1)
+         method - a string; currently supported : 'utility' [1,2]
+ 
+ [1] Narayanan, A. M., & Bertrand, A. (2019). Analysis of miniaturization effects and channel selection strategies for EEG sensor networks with application to auditory attention detection. IEEE Transactions on Biomedical Engineering.
+ [2] Bertrand, A. (2018). Utility Metrics for Assessment and Subset Selection of Input Variables for Linear Estimation [Tips & Tricks]. IEEE Signal Processing Magazine, 35(6), 93–99.
+
+
+'''
+   if 'A' in argV:
         A = argV['A']
     if 'b' in argV:
         b = argV['b']
