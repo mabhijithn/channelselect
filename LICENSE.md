@@ -1,7 +1,7 @@
 
 # Software License Agreement
 
-This Software was developed by the research groups STADIUS, Dept. of Electrical Engineering (ESAT) and is owned by the KU Leuven (hereinafter referred to as "KU LEUVEN"). 
+This Software was developed by the research group STADIUS, Dept. of Electrical Engineering (ESAT) and is owned by the KU Leuven (hereinafter referred to as "KU LEUVEN"). 
 
 ### Article 1 - Definitions			
 
