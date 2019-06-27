@@ -66,23 +66,25 @@ A function which selects the best columns of A in the least-squares problem
             
             
             # Estimate the current decoder using (A'A)^(-1)(A'b)
-            # Currently, the A matrix has to be full-rank. 
-            
-            # l2-regularization based definition of utility TO BE IMPLEMENTED
             
             # This decoder is used for the fast computation of utlity of a column or a group of columns
             AtA_rank = np.linalg.matrix_rank(AtA_sel)
             if AtA_rank==AtA_sel.shape[1]:
-                    AtA_sel_inv = np.linalg.inv(AtA_sel)
-            else:
-                print('Currently, the A matrix has to be full-rank. Aborting')
-                return
+                # If AtA is full-rank, normal definition of utility
+                AtA_sel_inv = np.linalg.inv(AtA_sel)
+            else:                
+                # l2-regularization based definition of utility when AtA is not full-rank
+                id_mat = np.identity(AtA_sel.shape[1])
+                diag_mat = np.diag(AtA_sel)
+                nz_diag = diag_mat>0
+                lmb_val = np.amin(diag_mat[nz_diag])
+                AtA_sel = AtA_sel + (lmb_val * 1e-5 * id_mat)
+                AtA_sel_inv = np.linalg.inv(AtA_sel)
             Atb_sel = Atb[col_sel_mask]
             W_sel = AtA_sel_inv @ Atb_sel            
             indx = np.array(np.where(ch_sel_mask==True))
             util = np.zeros((indx.shape[1],1),dtype='float')
-            k = 1
-       
+            k = 1      
         # Compute (group)-utility of columns of current A
             while k<=len(util):
                 if lags==1:
