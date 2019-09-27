@@ -8,9 +8,12 @@ This project holds useful functions in emulation and analysis of Wireless EEG Se
 
 
 ## Features
-1. Channel Selection: Selects the best N channels of A for the LS problem 
+1. Channel Selection: Selects the best N channels of A  which minimizes the following LS problem 
 
-	$$ \min_{\mathbf{w}}\frac{1}{2}||\mathbf{A}_P\mathbf{w} - \mathbf{s}_a||_{2}^{2} $$
+	min_w ||Aw - b||^2
+	
+	where, A is (T X M) matrix. w is a (M X 1) filter. b is the desired (T X 1) signal which we are
+	looking to reconstruct using the solution of the above problem.
 
 a. MATLAB version: channel_select.m
 
