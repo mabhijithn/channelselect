@@ -1,8 +1,3 @@
----
-layout: post
-mathjax: true
-title: Readme
----
 # WESN Tools
 This project holds useful functions in emulation and analysis of Wireless EEG Sensor Networks [1].
 
@@ -14,13 +9,15 @@ This project holds useful functions in emulation and analysis of Wireless EEG Se
 	
 	where, A is (T X M) matrix. w is a (M X 1) filter. b is the desired (T X 1) signal which we are
 	looking to reconstruct using the solution of the above problem.
+	
+	Currently supported methods: 
+		1. Utility-based channel selection
 
 a. MATLAB version: channel_select.m
 
 b. Python version: channel_select.py
 
-	Currently supported methods: 
-		1. Utility based method.
+	
 
 
 ## References
