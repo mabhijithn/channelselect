@@ -3,7 +3,7 @@ This project has code implementing channel-selection in an LS problem. Originall
 
 
 ## Features
-Utility-based channel Selection: Selects the _best N_ channels of A  the following LS minimization problem 
+Utility-based channel Selection: Selects the _best N_ channels of A in the following LS minimization problem 
 
 	min_w ||Aw - b||^2
 	
