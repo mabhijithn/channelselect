@@ -17,7 +17,6 @@
 %            singular, utility definition with minimum norm increase 
 %            interpretation is used.
 %            (ref. A. Bertrand, 2018)
-%            'lasso' - LASSO based channel selection
 %
 %   'lags' - Number of delays (in number of samples) applied to channels in A
 %          default: 0 (assumes no delays)
