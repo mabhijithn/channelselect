@@ -75,7 +75,7 @@ By downloading and or installing the Software and associated files on your compu
 
 #### A.1 Description of the Software:
 
-The Software constitutes any software distributed as part of or pertaining to the MATLAB and Python code as made available online at https://github.com/mabhijithn/wesn_tools.
+The Software constitutes any software distributed as part of or pertaining to the MATLAB and Python code as made available online at https://github.com/mabhijithn/channelselect.
 
 
 #### A.2 References:
