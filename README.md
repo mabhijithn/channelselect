@@ -11,6 +11,9 @@ Group-utility based channel Selection: Selects the _best N_ channels of A in the
 	looking to reconstruct using the solution of the above problem.
 	
 The best channels are selected based on group-utility, where group-utility is defined as the increase in mean-squared error (MSE) when a group of channels (i.e. columns of _A_) are removed from the problem. 
+
+Functions in the repo:
+
 a. MATLAB version: channel_select.m
 
 b. Python version: channel_select.py
