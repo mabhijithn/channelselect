@@ -18,8 +18,14 @@
 %            interpretation is used.
 %            (ref. A. Bertrand, 2018)
 %
-%   'lags' - Number of delays (in number of samples) applied to channels in A
-%          default: 0 (assumes no delays)
+%   'lags' - Number of delays (in number of samples) already applied to channels/columns of A.
+%          Channel-k and its time-lagged copies are together considered as a group. The utility of this group 
+%          is considered as the utility of channel-k.
+%          For. eg:
+%          If every channel and their 2 time-lagged versions (a channel itself + 2 lagged versions) are present, then:
+%          lags = 2.
+%          (note: group size in the above case would be 3.)
+%          default: 0 (no time-lagged versions included. group size is 1)
 %   
 %               
 %   
