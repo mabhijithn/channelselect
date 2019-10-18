@@ -9,8 +9,18 @@ A function which selects the best columns of A in the least-squares problem
   
   Input: A - matrix with channels/features along columns and time/length of features along rows
             size: (T X N) - N channels; T duration/length
+        
         b - Vector of size (T X 1)
-         method - a string; currently supported : 'utility' [1,2]
+        
+        method - a string; currently supported : 'utility' [1,2]
+        lags - Number of delays (in number of samples) already applied to channels/columns of A.
+               Channel-k and its time-lagged copies are together considered as a group. The utility of this group 
+               is considered as the utility of channel-k.          
+               For. eg:
+               If every channel and their 2 time-lagged versions (a channel itself + 2 lagged versions) are present, then:
+               lags = 2.
+               (note: group size in the above case would be 3.)
+               default: 0 (no time-lagged versions included. group size is 1)
  
  [1] Narayanan, A. M., & Bertrand, A. (2019). Analysis of miniaturization effects and channel selection strategies for EEG sensor networks with application to auditory attention detection. IEEE Transactions on Biomedical Engineering.
  [2] Bertrand, A. (2018). Utility Metrics for Assessment and Subset Selection of Input Variables for Linear Estimation [Tips & Tricks]. IEEE Signal Processing Magazine, 35(6), 93–99.
