@@ -2,8 +2,9 @@
 This project has code implementing channel-selection in an LS problem. Originally implemented for channel-selection in auditory attention decoding (AAD) based on EEG [1], the functions can be used in selecting relevant channels in an LS problem using any multi-channel signal.
 
 
-## Features
-Group-utility based channel Selection: Selects the _best N_ channels of A in the following LS minimization problem 
+### Group-utility based channel selection 
+
+Selects the _best N_ channels of _A_ which minimizes the following LS minimization problem:
 
 	min_w ||Aw - b||^2
 	
