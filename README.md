@@ -3,13 +3,14 @@ This project has code implementing channel-selection in an LS problem. Originall
 
 
 ## Features
-Utility-based channel Selection: Selects the _best N_ channels of A in the following LS minimization problem 
+Group-utility based channel Selection: Selects the _best N_ channels of A in the following LS minimization problem 
 
 	min_w ||Aw - b||^2
 	
 	where, A is (T X M) matrix. w is a (M X 1) filter. b is the desired (T X 1) signal which we are
 	looking to reconstruct using the solution of the above problem.
-
+	
+The best channels are selected based on group-utility, where group-utility is defined as the increase in mean-squared error (MSE) when a group of channels (i.e. columns of _A_) are removed from the problem. 
 a. MATLAB version: channel_select.m
 
 b. Python version: channel_select.py
