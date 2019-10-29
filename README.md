@@ -12,6 +12,7 @@ Selects the _best N_ channels of _A_ which minimizes the following LS minimizati
 	looking to reconstruct using the solution of the above problem.
 	
 The best channels are selected based on group-utility, where group-utility is defined as the increase in mean-squared error (MSE) when a group of channels (i.e. columns of _A_) are removed from the problem. 
+Note: Currently, the _groups_ should be of a fixed size _m_ and these _m_ columns should be consecutive. The matrix _A_ can be permuted to this format before passing to the function without affecting the problem.
 
 Functions in the repo:
 
