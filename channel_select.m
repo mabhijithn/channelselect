@@ -55,6 +55,12 @@ function ch_selected = channel_select(A, b, N, varargin)
                     method = Value;
                 case 'lags'
                     noflags = Value+1;
+                case 'groupid'
+                    grpid = Value;
+                    nofuniq = unique(grpid); % Number of unique groups
+                    if(size(grpid,1)~=size(A,2))
+                        error('Length of group-ids != No.of columns in A');
+                    end
             end
         end
     end
