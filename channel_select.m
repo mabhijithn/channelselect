@@ -112,6 +112,7 @@ function ch_selected = channel_select(A, b, N, varargin)
         deleted_channels = zeros(no_of_channels,1);
         del_ch_count = 0;
         indep_vars = 0;
+	recursive_comp = 0;
 
         while(no_of_channels-del_ch_count>N)
 
@@ -142,7 +143,7 @@ function ch_selected = channel_select(A, b, N, varargin)
             else             
                  % Recursive computation of inverse - reduce complexity
                  % Only after the first inverse has been computed
-                if(del_ch_count)
+                if(recursive_comp)
                     k = idx;                                       
                     S = Xinv((k-1)*noflags+1:k*noflags,(k-1)*noflags+1:k*noflags);
                     
@@ -160,7 +161,8 @@ function ch_selected = channel_select(A, b, N, varargin)
                     Xinv = Xinvnew;
                 else
                     lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
-                    Xinv = inv(X_sel + min_norm_flag*lambda_I);
+                    Xinv = (X_sel + min_norm_flag*lambda_I)\eye(size(X_sel,1));
+		    recursive_comp = 1;
                 end         
             end
 
