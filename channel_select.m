@@ -73,7 +73,7 @@ function ch_selected = channel_select(A, b, N, varargin)
                     method = Value;
 		% The following case is for backward compatibility for an earlier version of this
 		% code which had 'lags' argument instead of 'group_size'
-		case 'lags'
+                case 'lags'
                     noflags = Value+1;
                     lagsflag = 1;
                 case 'group_size'
@@ -112,9 +112,10 @@ function ch_selected = channel_select(A, b, N, varargin)
         deleted_channels = zeros(no_of_channels,1);
         del_ch_count = 0;
         indep_vars = 0;
-	recursive_comp = 0;
+        recursive_comp = 0;
+        csflag = 1;
 
-        while(no_of_channels-del_ch_count>N)
+        while(csflag)
 
             % Populate a list of remaining channel numbers
             temp_chnl_list = chnl_list(node_ids,:);
@@ -199,8 +200,12 @@ function ch_selected = channel_select(A, b, N, varargin)
             node_ids(row_id) = false;
 
             % store the deleted/removed channel
-            del_ch_count = del_ch_count+1;
+            del_ch_count = del_ch_count+1;            
             deleted_channels(del_ch_count,1) = temp_ch_sel;                
+            
+            if(no_of_channels-del_ch_count==N || del_ch_count==N)
+                csflag = 0;
+            end
         end
 
         % Best N channels/group-IDs in ascending order of significance
