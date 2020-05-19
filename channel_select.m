@@ -122,9 +122,9 @@ function ch_selected = channel_select(A, b, N, varargin)
             X_sel = RXX(logical(col_sel), logical(col_sel));
             RXY_sel = RXY(logical(col_sel),:);              
 
-            % Check if normal utility or minimum norm utility definition
-            % to be used based on rank of covariance
-            if(rank(X_sel)<size(X_sel,2))
+            % Check if normal utility or minimum norm utility definition is
+            % to be used based on the covariance being singular
+            if(rcond(X_sel)<1e-12)
                 min_norm_flag = 1;
             else                
                 min_norm_flag = 0;
@@ -134,8 +134,9 @@ function ch_selected = channel_select(A, b, N, varargin)
             
             util = zeros(size(temp_chnl_list,1),1);
 
-            eigvals = diag(X_sel);
-            lambda_scaling = min(eigvals(eigvals>0));
+            % Select the minimum positive eigenvalue as lambda
+            eigvals = eig(X_sel);
+            lambda_scaling = min(eigvals(eigvals>1e-3));
             
             if(min_norm_flag)
                 % Find regularized inverse for minimum norm utility definition 
@@ -163,7 +164,7 @@ function ch_selected = channel_select(A, b, N, varargin)
                 else
                     lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
                     Xinv = (X_sel + min_norm_flag*lambda_I)\eye(size(X_sel,1));
-		    recursive_comp = 1;
+                    recursive_comp = 1;
                 end         
             end
 
