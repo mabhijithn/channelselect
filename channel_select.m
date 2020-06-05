@@ -133,16 +133,12 @@ function ch_selected = channel_select(A, b, N, varargin)
             end
             
             util = zeros(size(temp_chnl_list,1),1);
-
-            % Select the minimum positive eigenvalue as lambda
-            eigvals = eig(X_sel);
-            lambda_scaling = min(eigvals(eigvals>1e-3));
             
             if(min_norm_flag)
-                % Find regularized inverse for minimum norm utility definition 
-                lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
-                Xinv = inv(X_sel + min_norm_flag*lambda_I);
-            else             
+%                 % Find regularized inverse for minimum norm utility definition 
+%                 lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
+%                 Xinv = inv(X_sel + min_norm_flag*lambda_I);
+%             else             
                  % Recursive computation of inverse - reduce complexity
                  % Only after the first inverse has been computed
                 if(recursive_comp)
@@ -162,6 +158,9 @@ function ch_selected = channel_select(A, b, N, varargin)
                     
                     Xinv = Xinvnew;
                 else
+                    % Select the minimum positive eigenvalue as lambda
+                    eigvals = eig(X_sel);
+                    lambda_scaling = min(eigvals(eigvals>1e-3));
                     lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
                     Xinv = (X_sel + min_norm_flag*lambda_I)\eye(size(X_sel,1));
                     recursive_comp = 1;
