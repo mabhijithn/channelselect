@@ -134,11 +134,7 @@ function ch_selected = channel_select(A, b, N, varargin)
             
             util = zeros(size(temp_chnl_list,1),1);
             
-            if(min_norm_flag)
-%                 % Find regularized inverse for minimum norm utility definition 
-%                 lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
-%                 Xinv = inv(X_sel + min_norm_flag*lambda_I);
-%             else             
+            if(min_norm_flag)                         
                  % Recursive computation of inverse - reduce complexity
                  % Only after the first inverse has been computed
                 if(recursive_comp)
@@ -158,6 +154,7 @@ function ch_selected = channel_select(A, b, N, varargin)
                     
                     Xinv = Xinvnew;
                 else
+                    % Find regularized inverse for minimum norm utility definition
                     % Select the minimum positive eigenvalue as lambda
                     eigvals = eig(X_sel);
                     lambda_scaling = min(eigvals(eigvals>1e-3));
@@ -169,12 +166,8 @@ function ch_selected = channel_select(A, b, N, varargin)
                 Xinv = X_sel\eye(size(X_sel,1));
             end
 
-            try
             % Compute the new decoder with remaining channels
-                W = Xinv * RXY_sel;
-            catch
-                disp('Issue here');
-            end
+            W = Xinv * RXY_sel;
             
             % Create group-IDs if lagged versions in data
             if(lagsflag)
