@@ -164,11 +164,17 @@ function ch_selected = channel_select(A, b, N, varargin)
                     lambda_I = (lambda_scaling*1.0e-5)*eye(size(X_sel,1)); 
                     Xinv = (X_sel + min_norm_flag*lambda_I)\eye(size(X_sel,1));
                     recursive_comp = 1;
-                end         
+                end
+            else
+                Xinv = X_sel\eye(size(X_sel,1));
             end
 
+            try
             % Compute the new decoder with remaining channels
-            W = Xinv * RXY_sel;
+                W = Xinv * RXY_sel;
+            catch
+                disp('Issue here');
+            end
             
             % Create group-IDs if lagged versions in data
             if(lagsflag)
@@ -196,7 +202,7 @@ function ch_selected = channel_select(A, b, N, varargin)
 
             % Delete that channel from the set
             row_id = find(chnl_list==temp_ch_sel);
-            col_sel((row_id-1)*noflags+1:row_id*noflags) = 0;        
+            col_sel((row_id-1)*noflags+1:row_id*noflags) = 0;       
             node_ids(row_id) = false;
 
             % store the deleted/removed channel
