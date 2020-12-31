@@ -1,4 +1,7 @@
 # Channel Selection in a least-squares (LS) problem 
+
+[![HitCount](http://hits.dwyl.com/mabhijithn/channelselect.svg)](http://hits.dwyl.com/mabhijithn/channelselect)
+
 This project has code implementing channel-selection in an LS problem. Originally implemented for channel-selection in auditory attention decoding (AAD) based on EEG [1], the functions can be used in selecting relevant channels in an LS problem using any multi-channel signal.
 
 
